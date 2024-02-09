@@ -1240,6 +1240,18 @@ modbus:
         scale: 0.1
         scan_interval: 600
 
+      - name: Grid state
+        unique_id: sg_grid_state
+        device_address: !secret sungrow_modbus_slave
+        address: 13029 # reg 13030
+        input_type: input
+        data_type: int16
+        precision: 1
+        device_class: current
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 10
+
       - name: Phase A current
         unique_id: sg_phase_a_current
         device_address: !secret sungrow_modbus_slave
@@ -1546,6 +1558,85 @@ modbus:
         state_class: measurement
         scale: 10
         scan_interval: 10
+
+      # pjottr test min max Cell Voltage
+      - name: Battery Module 1 max cell voltage
+        unique_id: sg_battery_module_1_max_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10764 # reg 10765
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
+
+      - name: Battery Module 2 max cell voltage
+        unique_id: sg_battery_module_2_max_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10765 # reg 10766
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
+
+      - name: Battery Module 3 max cell voltage
+        unique_id: sg_battery_module_3_max_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10766 # reg 10767
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
+
+      - name: Battery Module 1 min cell voltage
+        unique_id: sg_battery_module_1_min_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10772 # reg 10773
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
+
+      - name: Battery Module 2 min cell voltage
+        unique_id: sg_battery_module_2_min_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10773 # reg 10774
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
+
+      - name: Battery Module 3 min cell voltage
+        unique_id: sg_battery_module_3_min_cell_voltage
+        device_address: !secret sungrow_modbus_sbr
+        address: 10774 # reg 10776
+        input_type: input
+        data_type: uint16
+        precision: 1
+        unit_of_measurement: mV
+        device_class: Voltage
+        state_class: measurement
+        scale: 0.1
+        scan_interval: 60
 
 # 'virtual' template sensors for better readability
 template:
@@ -2256,6 +2347,30 @@ template:
               - states('sensor.daily_battery_charge')|float 
               + states('sensor.daily_battery_discharge')|float
             )|int 
+          }}
+
+      - name: Daily consumed energy
+        unique_id: uid_daily_consumed_energy_float
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: total_increasing
+        availability: >-
+          {{ 
+          not is_state('sensor.daily_pv_generation', 'unavailable') 
+          and not is_state('sensor.daily_exported_energy', 'unavailable') 
+          and not is_state('sensor.daily_imported_energy', 'unavailable') 
+          and not is_state('sensor.daily_battery_charge', 'unavailable') 
+          and not is_state('sensor.daily_battery_discharge', 'unavailable') 
+          }}
+        state: >-
+          {{ 
+            (
+              states('sensor.daily_pv_generation')|float 
+              - states('sensor.daily_exported_energy')|float 
+              + states('sensor.daily_imported_energy')|float 
+              - states('sensor.daily_battery_charge')|float 
+              + states('sensor.daily_battery_discharge')|float
+            ) 
           }}
 
       - name: Total consumed energy
