@@ -1,1 +1,455 @@
 
+- id: '1692672371213'
+  alias: Z2M open Test
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 13baefde57f138ecbb37d2754d1357e1
+    entity_id: cc99073e70dcdcbb4561dd5b4b1b0aa7
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: input_boolean.hausalarm
+    state: 'on'
+  action:
+  - type: turn_on
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  mode: single
+- id: '1692672417369'
+  alias: Z2M close Test
+  description: ''
+  trigger:
+  - type: not_opened
+    platform: device
+    device_id: 13baefde57f138ecbb37d2754d1357e1
+    entity_id: cc99073e70dcdcbb4561dd5b4b1b0aa7
+    domain: binary_sensor
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 10
+      milliseconds: 0
+  - type: turn_off
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  mode: single
+- id: '1692722650139'
+  alias: ZZ New Automation
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 8d614bc7c159d57815064fef5fe14c3d
+    entity_id: a5bf0b7d1f4f20f05226999121d3b018
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  mode: single
+- id: '1692767379943'
+  alias: Time on off
+  description: ''
+  trigger:
+  - platform: time_pattern
+    seconds: /30
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  - wait_template: ''
+    continue_on_timeout: true
+    timeout: '5'
+  - type: turn_off
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  mode: single
+- id: '20230823151100'
+  alias: Save Blink Video on Motion
+  trigger:
+  - platform: state
+    entity_id: binary_sensor.blink_garten_bewegung
+    to: 'on'
+  action:
+  - service: blink.save_video
+    data:
+      name: Garten
+      filename: /config/www/blink_video_{{ now().strftime('%Y%m%d_%H%M%S') }}.mp4
+- id: '1692797081347'
+  alias: Update Kamerabild
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition: []
+  action:
+  - service: script.blink_update_cameras
+    data: {}
+  mode: single
+- id: '1692801729931'
+  alias: videos
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /1
+  condition: []
+  action:
+  - service: blink.save_video
+    data:
+      name: Terrasse
+      filename: /config/www/video.mp4
+  mode: single
+- id: '1692938085786'
+  alias: Alarm Tuer offen
+  description: Alarm löst aus wenn Türen offen stehen und Hausalarm scharf geschaltet
+    ist
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 13baefde57f138ecbb37d2754d1357e1
+    entity_id: cc99073e70dcdcbb4561dd5b4b1b0aa7
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 7e178688c0bd0baa1e355f07f054913f
+    entity_id: d646a1fcacfee459bb41104e3d583356
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 5dae38a364869dd1639948473d1279d8
+    entity_id: 118e5dc5d12205c7484733e1cd8ae074
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 72a7290d8681df74bb12e94568988cd1
+    entity_id: f0ece370b323e4a12c6539d218cca72d
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 59bfb09088253f9c57d767c4ed0ad6af
+    entity_id: fab20aaf634758a38d8d15bbfcec102d
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: b1fdb7bdcf1dc984c9eae5104b646500
+    entity_id: be02ce4ab5e10b24bd2c121932079b0d
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 59bfb09088253f9c57d767c4ed0ad6af
+    entity_id: fab20aaf634758a38d8d15bbfcec102d
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: c23473f3854628afccea7873f3e25021
+    entity_id: 892e3744f961adaee16cc4dcfdd370dd
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: d18d07b4a587b180e5697131b8f639c7
+    entity_id: f43567d7939b8b6829eb4cc5efb50f5f
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 66724b54f97d1f77e70b20d4c54c1746
+    entity_id: eba8d43245b226840f70b8682dc71c89
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 8297e5936564af346f53e2b15dd89b4e
+    entity_id: c87ec007d9754773091354d7c2303d49
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 98e0696f30b809107e412dd112495648
+    entity_id: 31c2cd49e1eb258806d276994e2e1a45
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: c6131b40895821c63d143bb0757d26a8
+    entity_id: 59ac19b204938e642693449228aefff1
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: 2e9908b0a659f6732f7490707ce95b6f
+    entity_id: 45aeaa30c041a93247a94e330bc67b0e
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  - type: opened
+    platform: device
+    device_id: d567a9006f6989e0cffa2b55648cdc3f
+    entity_id: c1858965bd34e0cd97d04eaaff721cca
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 5
+  condition:
+  - condition: state
+    entity_id: input_boolean.hausalarm
+    state: 'on'
+  action:
+  - service: notify.mobile_app_a71_peter
+    data:
+      message: Z2M
+      title: Fenster ist offen
+  - service: notify.mobile_app_tablet_linus
+    data:
+      title: Türen und Fenster
+      message: Eine Tür oder ein Fenster ist offen.
+  - type: turn_on
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+  - service: script.alle_lichter_anschalten
+    data: {}
+  mode: single
+- id: '1692940421058'
+  alias: Kühl-/gefrierschrank Tür ist offen
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.ug_miele_gs_contact
+    - binary_sensor.ug_beko_ks_contact
+    - binary_sensor.ug_beko_gs_contact
+    from: 'off'
+    to: 'on'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  condition: []
+  action:
+  - service: notify.mobile_app_a71_peter
+    data:
+      title: Kühlschrank
+      message: Tür steht offen!
+  mode: single
+- id: '1692951985110'
+  alias: ZZ Alarmtest für mobile
+  description: Alarm löst aus wenn Türen offen stehen und Hausalarm scharf geschaltet
+    ist
+  trigger:
+  - type: opened
+    platform: device
+    device_id: 13baefde57f138ecbb37d2754d1357e1
+    entity_id: cc99073e70dcdcbb4561dd5b4b1b0aa7
+    domain: binary_sensor
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 10
+  condition:
+  - condition: state
+    entity_id: input_boolean.hausalarm
+    state: 'on'
+    enabled: false
+  action:
+  - service: notify.mobile_app_a71_peter
+    data:
+      message: Z2M
+      title: Fenster ist offen
+  - type: turn_on
+    device_id: 816271907e3bcdeace6f128a797ce355
+    entity_id: e682e6e4c56d2d8664776c8493992137
+    domain: switch
+    enabled: false
+  mode: single
+- id: '1693255350376'
+  alias: Alle Lichter aus bei Alarm aus
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_boolean.hausalarm
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - service: script.alle_lichter_ausschalten
+    data: {}
+  mode: single
+- id: '1706855942666'
+  alias: Set Battery Charge Power between SOC 0 - 100
+  description: Set Battery Charge Power between SOC 0 - 100
+  trigger:
+  - platform: state
+    entity_id:
+    - sensor.battery_level
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.battery_level
+        below: 80
+      - condition: and
+        conditions:
+        - condition: or
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            above: 2550
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            below: 2450
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: SungrowSHx
+          address: 33046
+          slave: 1
+          value: 250
+      - service: notify.mobile_app_a71_peter
+        metadata: {}
+        data:
+          message: Battery charge power is set to 2500W
+      alias: Battery level between 0 and 80 -> max Load 2.5kW
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.battery_level
+        below: 90
+        above: 79.9
+      - condition: and
+        conditions:
+        - condition: or
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            above: 1550
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            below: 1450
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: SungrowSHx
+          address: 33046
+          slave: 1
+          value: 150
+      - service: notify.mobile_app_a71_peter
+        metadata: {}
+        data:
+          message: Battery charge power is set to 1500W
+      alias: Battery level between 80 and 90 -> max Load 1.5kW
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.battery_level
+        below: 95
+        above: 89.9
+      - condition: and
+        conditions:
+        - condition: or
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            above: 1050
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            below: 950
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: SungrowSHx
+          address: 33046
+          slave: 1
+          value: 100
+      - service: notify.mobile_app_a71_peter
+        metadata: {}
+        data:
+          message: Battery charge power is set to 1000W
+      alias: Battery level between 90 and 95 -> max Load 1.0kW
+    - conditions:
+      - condition: numeric_state
+        entity_id: sensor.battery_level
+        above: 95
+      - condition: and
+        conditions:
+        - condition: or
+          conditions:
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            above: 550
+          - condition: numeric_state
+            entity_id: sensor.battery_max_charge_power
+            below: 450
+      sequence:
+      - service: modbus.write_register
+        data:
+          hub: SungrowSHx
+          address: 33046
+          slave: 1
+          value: 50
+      - service: notify.mobile_app_a71_peter
+        metadata: {}
+        data:
+          message: Battery charge power is set to 500W
+      alias: Battery level above 95 -> max Load 0.5kW
+  mode: single
